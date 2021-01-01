@@ -1,4 +1,5 @@
 from lib.games import Game, games_list
+from lib.users import User, users_list
 from os import environ
 from flask import (
     Flask, 
@@ -18,11 +19,13 @@ app.secret_key = environ['SECRET_KEY'] # % export SECRET_KEY=secret_key
 def index():
     return render_template('list.html', title='Games', games=games_list)
 
+
 @app.route('/new')
 def new():
     if 'current_user' not in session or session['current_user'] == None:
         return redirect(url_for('login', next=url_for('new')))
     return render_template('new.html', title='New Game')
+
 
 @app.route('/create', methods=['POST'])
 def create():
@@ -33,26 +36,32 @@ def create():
     games_list.append(game)
     return redirect(url_for('index'))
 
+
 @app.route('/login')
 def login():
     next = request.args.get(key='next')
     return render_template('login.html', title="Login", next=next)
 
+
 @app.route('/auth', methods=['POST'])
 def auth():
-    if environ['SECRET_KEY'] == request.form['password']:
-        session['current_user'] = request.form['user']
-        flash('Welcome ' + str.capitalize(request.form['user']) + '!')
-        next_page = request.form['next']
-        return redirect(next_page)
+    if request.form['user'] in users_list:
+        user = users_list[request.form['user']]
+        if user.password == request.form['password']:
+            session['current_user'] = user.id
+            flash('Welcome ' + str.capitalize(user.id) + '!')
+            next_page = request.form['next']
+            return redirect(next_page)
     else:
-        flash(u'Invalid password provided!', category='error')
-        return redirect(url_for('login'), title="Login")
+        flash(u'Invalid user or password!', category='error')
+        return redirect(url_for('login'))
+
 
 @app.route('/logout')
 def logout():
     session['current_user'] = None
     flash('User logged out successfully!')
     return redirect(url_for('index'))
+
 
 app.run(debug=True)
