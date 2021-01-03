@@ -13,7 +13,11 @@ from flask import (
 
 
 app = Flask(__name__)
-app.secret_key = environ['SECRET_KEY'] # % export SECRET_KEY=secret_key
+if environ.get('SECRET_KEY') is None:
+    raise KeyError('SECRET_KEY not defined in current environment # export SECRET_KEY=value')
+else:
+    app.secret_key = environ['SECRET_KEY']
+
 
 @app.route('/')
 def index():
@@ -52,9 +56,9 @@ def auth():
             flash('Welcome ' + str.capitalize(user.id) + '!')
             next_page = request.form['next']
             return redirect(next_page)
-    else:
-        flash(u'Invalid user or password!', category='error')
-        return redirect(url_for('login'))
+        else:
+            flash(u'Invalid user or password!', category='error')
+            return redirect(url_for('login'))
 
 
 @app.route('/logout')
