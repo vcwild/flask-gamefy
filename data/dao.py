@@ -1,11 +1,11 @@
 from lib.models import Game, User
 
-SQL_DELETE_GAME = 'delete from game where id = %s'
-SQL_GAME_BY_ID = 'SELECT id, name, category, console from game where id = %s'
-SQL_USER_BY_ID = 'SELECT id, name, password from user where id = %s'
-SQL_UPDATE_GAME = 'UPDATE game SET name=%s, category=%s, console=%s where id = %s'
-SQL_SEARCH_GAME = 'SELECT id, name, category, console from game'
-SQL_CREATE_GAME = 'INSERT into game (name, category, console) values (%s, %s, %s)'
+SQL_DELETE_GAME = 'DELETE from game where id = %s'
+SQL_GAME_BY_ID = 'SELECT id, name, category, console FROM game WHERE id = %s'
+SQL_USER_BY_ID = 'SELECT id, name, password FROM user WHERE id = %s'
+SQL_UPDATE_GAME = 'UPDATE game SET name=%s, category=%s, console=%s WHERE id = %s'
+SQL_SEARCH_GAME = 'SELECT id, name, category, console FROM game'
+SQL_CREATE_GAME = 'INSERT into game (name, category, console) VALUES (%s, %s, %s)'
 
 
 class GameDao:
