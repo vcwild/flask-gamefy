@@ -11,7 +11,6 @@ from flask import (
     url_for
 )
 
-
 app = Flask(__name__)
 if environ.get('SECRET_KEY') is None:
     raise KeyError('SECRET_KEY not defined in current environment # export SECRET_KEY=value')
