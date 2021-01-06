@@ -1,10 +1,4 @@
-class Game:
-    def __init__(self, name, category, console) -> None:
-        self.name = name
-        self.category = category
-        self.console = console
-
-
+from lib.models import Game
 
 games_list = [
     Game('Killer Instinct', 'Fight', 'Dreamcast'),

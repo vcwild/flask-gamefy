@@ -1,10 +1,4 @@
-class User:
-    def __init__(self, id, name, password) -> None:
-        self.id = id
-        self.name = name
-        self.password = password
-
-
+from lib.models import User
 
 users = [
     User('daniel', 'Daniel Hielts', 'DANIEL'),

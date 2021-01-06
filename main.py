@@ -1,22 +1,30 @@
-from lib.games import Game, games_list
-from lib.users import User, users_list
+from lib.models import Game, User
+from lib.games import games_list
+from lib.users import users_list
+from data.dao import UserDao, GameDao
 from os import environ
 from flask import (
-    Flask, 
-    render_template, 
-    request, 
-    redirect, 
-    session, 
-    flash,
-    url_for
+    Flask, render_template, request, redirect, session, flash,url_for
 )
+from flask_mysqldb import MySQL
+
+if environ.get('SECRET_KEY') is None:
+    raise KeyError('SECRET_KEY not defined in current environment # export SECRET_KEY=[value]')
+if environ.get('MYSQL_PASSWORD') is None:
+    raise KeyError('MYSQL_PASSWORD not defined in environment # export MYSQL_PASSWORD=[value]')
+
 
 app = Flask(__name__)
-if environ.get('SECRET_KEY') is None:
-    raise KeyError('SECRET_KEY not defined in current environment # export SECRET_KEY=value')
-else:
-    app.secret_key = environ['SECRET_KEY']
+app.secret_key = environ['SECRET_KEY']
+app.config['MYSQL_HOST'] = "0.0.0.0"
+app.config['MYSQL_USER'] = "user"
+app.config['MYSQL_PASSWORD'] = environ['MYSQL_PASSWORD']
+app.config['MYSQL_DB'] = 'db'
+app.config['MYSQL_PORT'] = 3306
 
+db = MySQL(app)
+
+game_dao = GameDao(db)
 
 @app.route('/')
 def index():
@@ -36,7 +44,7 @@ def create():
     category = request.form['category']
     console = request.form['console']
     game = Game(name, category, console)
-    games_list.append(game)
+    game_dao.save(game)
     return redirect(url_for('index'))
 
 

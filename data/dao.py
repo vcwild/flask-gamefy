@@ -1,4 +1,4 @@
-from lib.classes import Game, User
+from lib.models import Game, User
 
 SQL_DELETE_GAME = 'delete from game where id = %s'
 SQL_GAME_BY_ID = 'SELECT id, name, category, console from game where id = %s'
@@ -8,7 +8,7 @@ SQL_SEARCH_GAME = 'SELECT id, name, category, console from game'
 SQL_CREATE_GAME = 'INSERT into game (name, category, console) values (%s, %s, %s)'
 
 
-class gameDao:
+class GameDao:
     def __init__(self, db):
         self.__db = db
 
@@ -40,7 +40,7 @@ class gameDao:
         self.__db.connection.commit()
 
 
-class userDao:
+class UserDao:
     def __init__(self, db):
         self.__db = db
 
