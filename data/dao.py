@@ -1,4 +1,4 @@
-from lib.models import Game, User
+from models.models import Game, User
 
 SQL_DELETE_GAME = 'DELETE from game where id = %s'
 SQL_GAME_BY_ID = 'SELECT id, name, category, console FROM game WHERE id = %s'
@@ -7,7 +7,6 @@ SQL_UPDATE_GAME = 'UPDATE game SET name=%s, category=%s, console=%s WHERE id = %
 SQL_SEARCH_GAME = 'SELECT id, name, category, console FROM game'
 SQL_CREATE_GAME = 'INSERT into game (name, category, console) VALUES (%s, %s, %s)'
 
-
 class GameDao:
     def __init__(self, db):
         self.__db = db
@@ -15,7 +14,7 @@ class GameDao:
     def save(self, game):
         cursor = self.__db.connection.cursor()
 
-        if (game.id):
+        if game.id:
             cursor.execute(SQL_UPDATE_GAME, (game.name, game.category, game.console, game.id))
         else:
             cursor.execute(SQL_CREATE_GAME, (game.name, game.category, game.console))

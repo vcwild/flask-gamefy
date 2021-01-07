@@ -1,3 +1,5 @@
+    """This script can be used to populate the database with mock entities
+    """
 import MySQLdb
 
 conn = MySQLdb.connect(
