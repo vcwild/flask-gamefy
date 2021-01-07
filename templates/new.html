@@ -1,6 +1,15 @@
 {% extends "template.html" %}
 {% block content %}
-    <form action="{{ url_for('create') }}", method="post">
+    <form action="{{ url_for('create') }}", method="post" enctype="multipart/form-data">
+        <figure class="thumb col-md-4">
+            <img class="img-responsive" src="{{ url_for('image', game_image='default.jpg') }}">
+            <figcaption>
+                <label class="fileContainer">
+                    Change Image
+                    <input type="file" name="game_image" accept=".jpg">
+                </label>
+            </figcaption>
+        </figure>
         <fieldset>
             <div class="form-group">
                 <label for="name">Name</label>
@@ -17,7 +26,8 @@
                 <input type="text" id="console" name="console" class="form-control">
             </div>
             <br/>
-            <button type="submit" class="btn btn-primary btn-salvar">Submit</button>
+            <button type="submit" class="btn btn-primary btn-save">Submit</button>
+            <a class="btn btn-danger" href="{{ url_for('index') }}">Return</a>
         </fieldset>
     </form>
 {% endblock %}
