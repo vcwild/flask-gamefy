@@ -1,10 +1,11 @@
-    """This script can be used to populate the database with mock entities
-    """
+"""This script can be used to populate the database with mock entities
+"""
 import MySQLdb
+from os import environ
 
 conn = MySQLdb.connect(
     user='user',
-    passwd='password',
+    passwd=environ["MYSQL_PASSWORD"],
     host='127.0.0.1',
     port=3306
 )

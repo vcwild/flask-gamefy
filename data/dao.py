@@ -1,4 +1,4 @@
-from models.models import Game, User
+from models import Game, User
 
 SQL_DELETE_GAME = 'DELETE from game where id = %s'
 SQL_GAME_BY_ID = 'SELECT id, name, category, console FROM game WHERE id = %s'
@@ -6,6 +6,15 @@ SQL_USER_BY_ID = 'SELECT id, name, password FROM user WHERE id = %s'
 SQL_UPDATE_GAME = 'UPDATE game SET name=%s, category=%s, console=%s WHERE id = %s'
 SQL_SEARCH_GAME = 'SELECT id, name, category, console FROM game'
 SQL_CREATE_GAME = 'INSERT into game (name, category, console) VALUES (%s, %s, %s)'
+
+def unpack_games(games):
+    def tuple_n(tuple_n):
+        return Game(tuple_n[1], tuple_n[2], tuple_n[3], id=tuple_n[0])
+    return list(map(tuple_n, games))
+
+def unpack_user(tuple_n):
+    return User(tuple_n[0], tuple_n[1], tuple_n[2])
+
 
 class GameDao:
     def __init__(self, db):
@@ -25,7 +34,7 @@ class GameDao:
     def list_games(self):
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_SEARCH_GAME)
-        games = translate_games(cursor.fetchall())
+        games = unpack_games(cursor.fetchall())
         return games
 
     def search_by_id(self, id):
@@ -47,14 +56,5 @@ class UserDao:
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_USER_BY_ID, (id,))
         data = cursor.fetchone()
-        user = translate_user(data) if data else None
+        user = unpack_user(data) if data else None
         return user
-
-
-def translate_games(games):
-    def tuple_n(tuple_n):
-        return Game(tuple_n[1], tuple_n[2], tuple_n[3], id=tuple_n[0])
-    return list(map(tuple_n, games))
-
-def translate_user(tuple_n):
-    return User(tuple_n[0], tuple_n[1], tuple_n[2])
