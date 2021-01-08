@@ -9,7 +9,7 @@ if environ.get('MYSQL_PASSWORD') is None:
 SECRET_KEY = environ['SECRET_KEY']
 UPLOAD_PATH = path.dirname(path.abspath(__file__))+'/uploads'
 MYSQL_HOST = "0.0.0.0"
-MYSQL_USER = "user"
+MYSQL_USER = "root"
 MYSQL_PASSWORD = environ["MYSQL_PASSWORD"]
 MYSQL_DB = "db"
 MYSQL_PORT = 3306
